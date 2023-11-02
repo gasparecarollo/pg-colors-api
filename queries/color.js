@@ -12,7 +12,7 @@ const getAllColors = async () => {
 
 const getColor = async (id) => {
     try {
-        const oneColor = await db.one("SELECT * FROM colors WHERE id=$1", id);
+        const oneColor = await db.one("SELECT * FROM colors WHERE id=$1", id); //$1 is the first value
         return oneColor
     } catch (error) {
         return error

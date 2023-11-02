@@ -36,4 +36,19 @@ colors.post("/", checkName, checkBoolean, async (req, res) => {
     res.json(color)
 })
 
+const deleteColor = async (id) => {
+    try {
+
+        const deletedColor = await db.one("DELETE FROM colors WHERE id=$1 RETURNING *", id);
+        return deletedColor;
+
+    } catch (error) {
+
+        return error
+    }
+
+
+}
+
+
 module.exports = colors;
