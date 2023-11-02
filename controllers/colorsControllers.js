@@ -1,6 +1,6 @@
 const express = require('express');
 const colors = express.Router();
-const { getAllColors, getColor, createColor } = require('../queries/color');
+const { getAllColors, getColor, createColor, deleteColor } = require('../queries/color');
 const { checkName, checkBoolean } = require('../validations/checkColors');
 
 
@@ -36,19 +36,19 @@ colors.post("/", checkName, checkBoolean, async (req, res) => {
     res.json(color)
 })
 
-const deleteColor = async (id) => {
-    try {
+colors.delete("/:id", async (req, res) => {
+    //Destructure id out of req.params
+    const { id } = req.params   //const id = req.params.id;
+    // Use if as the argument for our deleteColor function call, and assign the return value to deletedColor
+    //We check if the object has the key of id, and if it does then we have a successful call, and we can send back a successful status
+    const deletedColor = await deleteColor(id);
 
-        const deletedColor = await db.one("DELETE FROM colors WHERE id=$1 RETURNING *", id);
-        return deletedColor;
-
-    } catch (error) {
-
-        return error
+    if (deletedColor.id) {
+        res.status(200).json(deletedColor)
+    } else {
+        res.status(404).json({ error: "Color not found" })
     }
-
-
-}
+})
 
 
 module.exports = colors;

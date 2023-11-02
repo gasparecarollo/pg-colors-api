@@ -31,5 +31,18 @@ const createColor = async (color) => {
     }
 }
 
+const deleteColor = async (id) => {
+    try {
 
-module.exports = { getAllColors, getColor, createColor }
+        const deletedColor = await db.one("DELETE FROM colors WHERE id=$1 RETURNING *", id);
+
+        return deletedColor;
+
+    } catch (error) {
+
+        return error
+    }
+
+}
+
+module.exports = { getAllColors, getColor, createColor, deleteColor }
